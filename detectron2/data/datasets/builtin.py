@@ -209,7 +209,7 @@ def register_all_pascal_voc(root="datasets"):
 
 
 # Register them all under "./datasets"
-register_all_coco()
+register_all_coco(root='/autox-sz/departments/perception/public_data')
 register_all_lvis()
 register_all_cityscapes()
 register_all_pascal_voc()

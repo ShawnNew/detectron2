@@ -7,6 +7,15 @@ import time
 import weakref
 import torch
 
+try:
+    import apex
+    from apex.parallel import DistributedDataParallel as DDP
+    from apex.fp16_utils import *
+    from apex import amp, optimizers
+    from apex.multi_tensor_apply import multi_tensor_applier
+except ImportError:
+    raise ImportError("Please install apex from https://www.github.com/nvidia/apex to run this example.")
+
 import detectron2.utils.comm as comm
 from detectron2.utils.events import EventStorage
 
@@ -222,7 +231,9 @@ class SimpleTrainer(TrainerBase):
         wrap the optimizer with your custom `zero_grad()` method.
         """
         self.optimizer.zero_grad()
-        losses.backward()
+        # losses.backward()
+        with amp.scale_loss(losses, self.optimizer) as scaled_losses:
+            scaled_losses.backward()
 
         """
         If you need gradient clipping/scaling or other processing, you can

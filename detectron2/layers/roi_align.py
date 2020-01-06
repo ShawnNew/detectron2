@@ -10,6 +10,8 @@ from detectron2 import _C
 class _ROIAlign(Function):
     @staticmethod
     def forward(ctx, input, roi, output_size, spatial_scale, sampling_ratio, aligned):
+        input = input.float()
+        roi = roi.float()
         ctx.save_for_backward(roi)
         ctx.output_size = _pair(output_size)
         ctx.spatial_scale = spatial_scale
@@ -19,12 +21,15 @@ class _ROIAlign(Function):
         output = _C.roi_align_forward(
             input, roi, spatial_scale, output_size[0], output_size[1], sampling_ratio, aligned
         )
+        output = output.half()
         return output
 
     @staticmethod
     @once_differentiable
     def backward(ctx, grad_output):
+        grad_output = grad_output.float()
         rois, = ctx.saved_tensors
+        rois = rois.float()
         output_size = ctx.output_size
         spatial_scale = ctx.spatial_scale
         sampling_ratio = ctx.sampling_ratio
@@ -42,6 +47,7 @@ class _ROIAlign(Function):
             sampling_ratio,
             ctx.aligned,
         )
+        grad_input = grad_input.half()
         return grad_input, None, None, None, None, None
 
 
