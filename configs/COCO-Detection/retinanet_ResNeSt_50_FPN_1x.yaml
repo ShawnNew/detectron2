@@ -1,0 +1,21 @@
+_BASE_: "../Base-RetinaNet.yaml"
+MODEL:
+  WEIGHTS: "https://hangzh.s3-us-west-1.amazonaws.com/encoding/models/resnest50_detectron-255b5649.pth"
+  RESNETS:
+    DEPTH: 50
+    STRIDE_IN_1X1: False
+    RADIX: 2
+    NORM: "SyncBN"
+  FPN:
+    NORM: "SyncBN"
+  # ANCHOR_GENERATOR:
+  #   SIZES: [[16, 32, 64, 128, 256]]
+SOLVER:
+  IMS_PER_BATCH: 32
+  # BASE_LR: 0.0001
+TEST:
+  EVAL_PERIOD: 5000
+DATASETS:
+  TRAIN: ("lisa_bulb_coco_train",)
+  TEST: ("lisa_bulb_coco_val",)
+OUTPUT_DIR: "output/day+night-resnest-retinanet-bulb-anchor"

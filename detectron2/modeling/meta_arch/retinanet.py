@@ -181,6 +181,7 @@ class RetinaNet(nn.Module):
         else:
             gt_instances = None
 
+        # import pdb; pdb.set_trace()
         features = self.backbone(images.tensor)
         features = [features[f] for f in self.in_features]
         box_cls, box_delta = self.head(features)

@@ -3,3 +3,14 @@ MODEL:
   WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
   RESNETS:
     DEPTH: 50
+  ANCHOR_GENERATOR:
+    SIZES: [[16, 32, 64, 128, 256]]
+SOLVER:
+  IMS_PER_BATCH: 16
+  BASE_LR: 0.0001 
+TEST:
+  EVAL_PERIOD: 5000
+DATASETS:
+  TRAIN: ("lisa_bulb_coco_train",)
+  TEST: ("lisa_bulb_coco_val",)
+OUTPUT_DIR: "output/day+night-retinanet-bulb-anchor"
