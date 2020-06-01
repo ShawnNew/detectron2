@@ -9,6 +9,7 @@ from detectron2.data import DatasetCatalog, MetadataCatalog
 from pathlib import Path
 from detectron2.structures import Instances
 import numpy as np
+import time
 
 
 def parse_args():
@@ -35,7 +36,10 @@ def main(args):
     inputs = Path(args.input)
     if inputs.is_file():
         im = cv2.imread(str(inputs))
+        tic = time.time()
         outputs = predictor(im)
+        toc = time.time()
+        logger.info("Time consumed per frame: {}.".format(toc-tic))
         v = Visualizer(im[:,:,::-1], metadata)
         v = v.draw_instance_predictions(outputs['instances'].to('cpu'))
         img = v.get_image()[:, :, ::-1]
@@ -45,12 +49,15 @@ def main(args):
         img_lists = list(inputs.glob('*.jpg'))
         for img in img_lists:
             im = cv2.imread(str(img))
+            tic = time.time()
             outputs = predictor(im)
+            toc = time.time()
+            logger.info("Time consumed per frame: {}.".format(toc-tic))
             v = Visualizer(im[:,:,::-1], metadata)
             v = v.draw_instance_predictions(outputs['instances'].to('cpu'))
             img = v.get_image()[:, :, ::-1]
             cv2.imshow('image', img)
-            cv2.waitKey(0)
+            cv2.waitKey(1)
 
 if __name__ == "__main__":
     args = parse_args()

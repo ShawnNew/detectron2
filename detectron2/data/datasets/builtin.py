@@ -214,20 +214,20 @@ def register_all_pascal_voc(root):
 # == Predefined splits for LISA COCO ===
 _PREDEFINED_SPLITS_LISA_COCO = {}
 _PREDEFINED_SPLITS_LISA_COCO['lisa_box_coco'] = {
-    "lisa_box_coco_train": ("lisa/train2017", "lisa/annotations/box_instances_train2017.json"),
-    "lisa_box_coco_val": ("lisa/val2017", "lisa/annotations/box_instances_val2017.json"),
-    "lisa_day_box_coco_train": ("lisa/train2017", "lisa/annotations/day_box_instances_train2017.json"),
-    "lisa_day_box_coco_val": ("lisa/val2017", "lisa/annotations/day_box_instances_val2017.json"),
-    "lisa_night_box_coco_train": ("lisa/train2017", "lisa/annotations/night_box_instances_train2017.json"),
-    "lisa_night_box_coco_val": ("lisa/val2017", "lisa/annotations/night_box_instances_val2017.json")
+    "lisa_box_coco_train": ("lisa", "lisa/Annotations/coco/annotations/box_instances_train2017.json"),
+    "lisa_box_coco_val": ("lisa", "lisa/Annotations/coco/annotations/box_instances_val2017.json"),
+    "lisa_day_box_coco_train": ("lisa", "lisa/Annotations/coco/annotations/day_box_instances_train2017.json"),
+    "lisa_day_box_coco_val": ("lisa", "lisa/Annotations/coco/annotations/day_box_instances_val2017.json"),
+    "lisa_night_box_coco_train": ("lisa", "lisa/Annotations/coco/annotations/night_box_instances_train2017.json"),
+    "lisa_night_box_coco_val": ("lisa", "lisa/Annotations/coco/annotations/night_box_instances_val2017.json")
 }
 _PREDEFINED_SPLITS_LISA_COCO['lisa_bulb_coco'] = {
-    "lisa_bulb_coco_train": ("lisa/train2017", "lisa/annotations/bulb_instances_train2017.json"),
-    "lisa_bulb_coco_val": ("lisa/val2017", "lisa/annotations/bulb_instances_val2017.json"),
-    "lisa_day_bulb_coco_train": ("lisa/train2017", "lisa/annotations/day_bulb_instances_train2017.json"),
-    "lisa_day_bulb_coco_val": ("lisa/val2017", "lisa/annotations/day_bulb_instances_val2017.json"),
-    "lisa_night_bulb_coco_train": ("lisa/train2017", "lisa/annotations/night_bulb_instances_train2017.json"),
-    "lisa_night_bulb_coco_val": ("lisa/val2017", "lisa/annotations/night_bulb_instances_val2017.json")
+    "lisa_bulb_coco_train": ("lisa", "lisa/Annotations/coco/annotations/bulb_instances_train2017.json"),
+    "lisa_bulb_coco_val": ("lisa", "lisa/Annotations/coco/annotations/bulb_instances_val2017.json"),
+    "lisa_day_bulb_coco_train": ("lisa", "lisa/Annotations/coco/annotations/day_bulb_instances_train2017.json"),
+    "lisa_day_bulb_coco_val": ("lisa", "lisa/Annotations/coco/annotations/day_bulb_instances_val2017.json"),
+    "lisa_night_bulb_coco_train": ("lisa", "lisa/Annotations/coco/annotations/night_bulb_instances_train2017.json"),
+    "lisa_night_bulb_coco_val": ("lisa", "lisa/Annotations/coco/annotations/night_bulb_instances_val2017.json")
 }
 def register_all_lisa_coco(root):
     for dataset_name, splits_per_dataset in _PREDEFINED_SPLITS_LISA_COCO.items():
