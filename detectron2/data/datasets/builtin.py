@@ -241,6 +241,25 @@ def register_all_lisa_coco(root):
                 os.path.join(root, image_root),
             )
 
+# == Predefined bulb-wise traffic light ===
+_PREDEFINED_BULB_TRAFFIC_LIGHT = {}
+_PREDEFINED_BULB_TRAFFIC_LIGHT["bulb_wise_tl"] = {
+    "bulb_wise_tl_train": ("traffic_light_bulb/images/tl_0521_4916", "traffic_light_bulb/annotations/train2017.json"),
+    "bulb_wise_tl_val": ("traffic_light_bulb/images/tl_0521_4916", "traffic_light_bulb/annotations/val2017.json")
+}
+
+def register_all_bulb_tl(root):
+    for dataset_name, splits_per_dataset in _PREDEFINED_BULB_TRAFFIC_LIGHT.items():
+        for key, (image_root, json_file) in splits_per_dataset.items():
+            # Assume pre-defined datasets live in `./datasets`.
+            register_coco_instances(
+                key,
+                # _get_builtin_metadata(dataset_name),
+                {},
+                os.path.join(root, json_file) if "://" not in json_file else json_file,
+                os.path.join(root, image_root),
+            )
+
 # Register them all under "./datasets"
 _root = os.getenv("DETECTRON2_DATASETS", "datasets")
 register_all_coco(_root)
@@ -248,3 +267,4 @@ register_all_lvis(_root)
 register_all_cityscapes(_root)
 register_all_pascal_voc(_root)
 register_all_lisa_coco(_root)
+register_all_bulb_tl(_root)

@@ -1,14 +1,11 @@
 import argparse
 import cv2
 from detectron2.utils.logger import setup_logger
-# setup_logger()
 from detectron2.config import get_cfg
 from detectron2.engine import DefaultPredictor
 from detectron2.utils.visualizer import Visualizer
 from detectron2.data import DatasetCatalog, MetadataCatalog
 from pathlib import Path
-from detectron2.structures import Instances
-import numpy as np
 import time
 
 
@@ -29,8 +26,8 @@ def main(args):
     cfg.merge_from_file(args.config)
     cfg.MODEL.WEIGHTS = args.weights
     cfg.MODEL.RETINANET.SCORE_THRESH_TEST = args.conf_threshold
-    dicts = list(DatasetCatalog.get("lisa_bulb_coco_train"))
-    metadata = MetadataCatalog.get("lisa_bulb_coco_train")
+    dicts = list(DatasetCatalog.get("bulb_wise_tl_train"))
+    metadata = MetadataCatalog.get("bulb_wise_tl_train")
 
     predictor = DefaultPredictor(cfg)
     inputs = Path(args.input)
@@ -43,7 +40,7 @@ def main(args):
         v = Visualizer(im[:,:,::-1], metadata)
         v = v.draw_instance_predictions(outputs['instances'].to('cpu'))
         img = v.get_image()[:, :, ::-1]
-        cv2.imshow('image', img)
+        cv2.imshow('Test on {}.'.format(str(inputs)), img)
         cv2.waitKey(0)
     else:
         img_lists = list(inputs.glob('*.jpg'))
@@ -56,8 +53,8 @@ def main(args):
             v = Visualizer(im[:,:,::-1], metadata)
             v = v.draw_instance_predictions(outputs['instances'].to('cpu'))
             img = v.get_image()[:, :, ::-1]
-            cv2.imshow('image', img)
-            cv2.waitKey(1)
+            cv2.imshow('Test on {}.'.format(str(inputs)), img)
+            cv2.waitKey(0)
 
 if __name__ == "__main__":
     args = parse_args()
