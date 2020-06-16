@@ -26,7 +26,7 @@ def main(args):
     cfg.merge_from_file(args.config)
     cfg.MODEL.WEIGHTS = args.weights
     cfg.MODEL.RETINANET.SCORE_THRESH_TEST = args.conf_threshold
-    dicts = list(DatasetCatalog.get("bulb_wise_tl_train"))
+    # dicts = list(DatasetCatalog.get("bulb_wise_tl_train"))
     metadata = MetadataCatalog.get("bulb_wise_tl_train")
 
     predictor = DefaultPredictor(cfg)
