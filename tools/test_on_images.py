@@ -7,6 +7,7 @@ from detectron2.utils.visualizer import Visualizer
 from detectron2.data import DatasetCatalog, MetadataCatalog
 from pathlib import Path
 import time
+import numpy as np
 
 
 def parse_args():
@@ -26,7 +27,7 @@ def main(args):
     cfg.merge_from_file(args.config)
     cfg.MODEL.WEIGHTS = args.weights
     cfg.MODEL.RETINANET.SCORE_THRESH_TEST = args.conf_threshold
-    # dicts = list(DatasetCatalog.get("bulb_wise_tl_train"))
+    dicts = list(DatasetCatalog.get("bulb_wise_tl_train"))
     metadata = MetadataCatalog.get("bulb_wise_tl_train")
 
     predictor = DefaultPredictor(cfg)
@@ -37,8 +38,14 @@ def main(args):
         outputs = predictor(im)
         toc = time.time()
         logger.info("Time consumed per frame: {}.".format(toc-tic))
+        instances = outputs['instances'].to('cpu')
+        scores = np.asarray([x for x in instances.scores])
+        chosen = (scores > args.conf_threshold).nonzero()[0]
+        instances = instances[chosen]
+        labels = instances.pred_classes.detach().numpy()
+        instances.pred_classes = labels
         v = Visualizer(im[:,:,::-1], metadata)
-        v = v.draw_instance_predictions(outputs['instances'].to('cpu'))
+        v = v.draw_instance_predictions(instances)
         img = v.get_image()[:, :, ::-1]
         cv2.imshow('Test on {}.'.format(str(inputs)), img)
         cv2.waitKey(0)
@@ -49,9 +56,15 @@ def main(args):
             tic = time.time()
             outputs = predictor(im)
             toc = time.time()
-            logger.info("Time consumed per frame: {}.".format(toc-tic))
+            logger.info("Time consumed per frame: {}.".format(toc - tic))
+            instances = outputs['instances'].to('cpu')
+            scores = np.asarray([x for x in instances.scores])
+            chosen = (scores > args.conf_threshold).nonzero()[0]
+            instances = instances[chosen]
+            labels = instances.pred_classes.detach().numpy()
+            instances.pred_classes = labels
             v = Visualizer(im[:,:,::-1], metadata)
-            v = v.draw_instance_predictions(outputs['instances'].to('cpu'))
+            v = v.draw_instance_predictions(instances)
             img = v.get_image()[:, :, ::-1]
             cv2.imshow('Test on {}.'.format(str(inputs)), img)
             cv2.waitKey(0)
